@@ -7,8 +7,11 @@ export default function Home() {
   const { data, error } = useSWR("https://restcountries.com/v3.1/all", fetcher);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [options, setOptions] = useState([]);
-  const [isMessage, setIsMessage] = useState(false);
+  const [message, setMessage] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
+
+  const messageBackgroundColorClass = isCorrect ? "bg-green-400" : "bg-red-400";
+  const messageTextColorClass = isCorrect ? "text-green-800" : "text-red-800";
 
   useEffect(() => {
     if (data) {
@@ -38,25 +41,12 @@ export default function Home() {
     setOptions(randomOptions);
   };
 
-  /*   const randomizeOptions = () => {
-    const randomIndex = Math.floor(Math.random() * data.length);
-    setSelectedCountry(data[randomIndex]);
-
-    // Randomize the options array with country names
-    const randomOptions = [
-      data[randomIndex].name.common,
-      data[(randomIndex + 1) % data.length].name.common,
-      data[(randomIndex + 2) % data.length].name.common,
-    ].sort(() => Math.random() - 0.5);
-    setOptions(randomOptions);
-  }; */
-
   const handleOptionClick = (option) => {
     if (option === selectedCountry.name.common) {
-      setIsMessage("Correct! You guessed the country name.");
+      setMessage("Correct! You guessed the country name.");
       setIsCorrect(true);
     } else {
-      setIsMessage("Incorrect. Try again!");
+      setMessage("Incorrect. Try again!");
       setIsCorrect(false);
     }
   };
@@ -79,18 +69,16 @@ export default function Home() {
           </button>
         ))}
       </div>
-      {isMessage && (
+      {message && (
         <div
-          className={`bg-${isCorrect ? "green" : "red"}-600 text-${
-            isCorrect ? "green" : "red"
-          }-800 px-4 py-2 my-4 rounded-lg inline-block`}
+          className={`${messageBackgroundColorClass} ${messageTextColorClass} px-4 py-2 my-4 rounded-lg inline-block`}
         >
-          {isMessage}
+          {message}
         </div>
       )}
       <div className="space-x-4">
         <button
-          onClick={() => setIsMessage(false)}
+          onClick={() => setMessage(false)}
           className="mt-4 bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded-lg"
         >
           Retry!
@@ -98,9 +86,9 @@ export default function Home() {
         <button
           onClick={() => {
             randomizeOptions();
-            setIsMessage(false);
+            setMessage(false);
           }}
-          className="mt-4 bg-yellow-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg"
+          className="mt-4 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg"
         >
           Next
         </button>
