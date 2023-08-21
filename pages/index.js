@@ -13,6 +13,8 @@ export default function Home() {
   const messageBackgroundColorClass = isCorrect ? "bg-green-400" : "bg-red-400";
   const messageTextColorClass = isCorrect ? "text-green-800" : "text-red-800";
 
+  let optionsCount = 2;
+
   useEffect(() => {
     if (data) {
       randomizeOptions();
@@ -20,7 +22,6 @@ export default function Home() {
   }, [data]);
 
   const randomizeOptions = () => {
-    const optionsCount = 10;
     const randomIndexes = [];
 
     while (randomIndexes.length < optionsCount) {
@@ -49,6 +50,11 @@ export default function Home() {
       setMessage("Incorrect. Try again!");
       setIsCorrect(false);
     }
+  };
+
+  const handleValueChange = (e) => {
+    optionsCount = e.target.value;
+    randomizeOptions();
   };
 
   if (error) return <div>Failed to load data</div>;
@@ -92,6 +98,27 @@ export default function Home() {
         >
           Next
         </button>
+      </div>
+      <div className="flex flex-col items-center m-4 mt-10">
+        <label
+          htmlFor="slider"
+          className="block text-lg font-semibold mb-2 text-color-foreground text-opacity-20"
+        >
+          Choose Answer Options:
+        </label>
+        <input
+          type="range"
+          min="2"
+          max="10"
+          defaultValue="2"
+          step="1"
+          onChange={(e) => {
+            handleValueChange(e);
+          }}
+          id="slider"
+          name="slider"
+          className="w-10/12 appearance-none bg-yellow-500 h-2 rounded-md outline-none focus:outline-none active:outline-none "
+        />
       </div>
     </div>
   );
