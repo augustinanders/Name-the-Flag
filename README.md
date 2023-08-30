@@ -20,7 +20,7 @@ This is a Country Quiz application built with [Next.js](https://nextjs.org/). Te
 
 ## Live Version 🌐
 
-[Vercel](https://your-vercel-deployment-url.vercel.app/) - Test your country knowledge now!
+[Vercel](https://name-the-flag.vercel.app/) - Test your country knowledge now!
 
 ## Getting Started  🚀
 
